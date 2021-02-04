@@ -63,7 +63,7 @@ beavalloc(size_t size)
 		{
 			alloc += MIN_SBRK_SIZE;
 		}
-		block_list_head = (mem_block_t *)sbrk(alloc);
+		block_list_head = lower_mem_bound = (mem_block_t *)sbrk(alloc);
 		ptr = BLOCK_DATA(block_list_head);
 		
 		//block_list_head->free = 0;
@@ -83,6 +83,8 @@ beavfree(void *ptr)
 void 
 beavalloc_reset(void)
 {
+	brk(lower_mem_bound);
+	return;
 }
 
 void *
