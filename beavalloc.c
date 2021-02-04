@@ -66,7 +66,7 @@ beavalloc(size_t size)
 		block_list_head = lower_mem_bound = (mem_block_t *)sbrk(alloc);
 		ptr = BLOCK_DATA(block_list_head);
 		
-		//block_list_head->free = 0;
+		//block_list_head->free = 1;
 		//block_list_head->capacity = alloc - BLOCK_SIZE;
 		//block_list_head->size = alloc;
 	}
@@ -76,7 +76,12 @@ beavalloc(size_t size)
 void 
 beavfree(void *ptr)
 {
-    return;
+    mem_block_t *block = ptr;
+	if(block->free == 0)
+		block->free = 1;
+	else if(isVerbose)
+		fprintf(beavalloc_log_stream, "a snarky message (block is already free)\n");
+	return;
 }
 
 
