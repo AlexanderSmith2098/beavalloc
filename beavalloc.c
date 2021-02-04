@@ -54,8 +54,22 @@ beavalloc_set_log(FILE *stream)
 void *
 beavalloc(size_t size)
 {
-    void *ptr = NULL;
-
+    void *ptr					= NULL;
+	int alloc					= MIN_SBRK_SIZE;
+	
+    if(size != 0)
+	{
+		while(alloc < size + 40)
+		{
+			alloc += MIN_SBRK_SIZE;
+		}
+		block_list_head = (mem_block_t *)sbrk(alloc);
+		ptr = BLOCK_DATA(block_list_head);
+		
+		//block_list_head->free = 0;
+		//block_list_head->capacity = alloc - BLOCK_SIZE;
+		//block_list_head->size = alloc;
+	}
     return ptr;
 }
 
